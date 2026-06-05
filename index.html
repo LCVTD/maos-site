@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAOS — operativsystemet för byggkonsulter</title>
+<meta name="description" content="MAOS är AI-operativsystemet för byggkonsulter med fler projekt än timmar. Inte en chatbot: ett lager ovanpå hela arbetsdagen. Mejl, avtal, protokoll, tid och beslut blir ett system." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   STRUCTURE / TYPE / MOTION read from cohere.com (2026-06-05)
+   PALETTE from MAOS moodboard v1 + logo (cyan on midnight navy)
+   Brand, copy and imagery are MAOS — original.
+   ============================================================ */
+:root{
+  --canvas:#071426;
+  --canvas-2:#0b1f36;
+  --black:#101214;
+  --surface:#0b1f36;
+  --paper:#f4f1ea;
+  --ink:#16191c;
+  --text:#f4f1ea;
+  --text-soft:rgba(244,241,234,.80);
+  --steel:#7c8791;
+  --steel-dark:#3b434a;
+  --hairline:rgba(244,241,234,.14);
+  --accent:#00d9ff;
+  --accent-soft:#63f0ff;
+  --accent-deep:#0094b3;
+  --blue:#1b7fe0;
+  --copper:#b87333;
+  --copper-lt:#e0a062;
+  --red:#9e1b1b;
+
+  --font-display:"Space Grotesk",Inter,ui-sans-serif,system-ui,sans-serif;
+  --font-body:Inter,ui-sans-serif,system-ui,sans-serif;
+  --font-tech:"Chakra Petch","Space Grotesk",ui-sans-serif,sans-serif;
+  --hero-size:clamp(1rem,10vw + 1rem,10rem);
+  --w-display:450;
+  --w-text:500;
+  --track-tight:-0.02em;
+  --track-label:0.08em;
+
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:9999px;
+
+  --container:1440px;
+  --pad:120px;
+  --nav-h:64px;
+
+  --ease:cubic-bezier(.4,0,.2,1);
+  --ease-out:cubic-bezier(0,0,.2,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    linear-gradient(rgba(124,135,145,.045) 1px,transparent 1px),
+    linear-gradient(90deg, rgba(0,217,255,.045) 1px,transparent 1px),
+    var(--canvas);
+  background-size:56px 56px,56px 56px,auto;
+  color:var(--text);
+  font-family:var(--font-body);
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.container{width:100%;max-width:var(--container);margin:0 auto;padding:0 32px}
+
+.eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--accent-soft)}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:var(--w-display);letter-spacing:var(--track-tight);line-height:1.02;color:var(--text)}
+.lede{font-size:clamp(18px,1.6vw,22px);line-height:1.45;color:var(--text-soft);max-width:42ch}
+
+.accent-line{height:4px;width:min(440px,100%);background:linear-gradient(90deg,var(--accent) 0 30%,var(--copper) 30% 74%,var(--red) 74% 100%)}
+
+.btn{display:inline-flex;align-items:center;gap:.5em;font-family:var(--font-body);font-size:15px;font-weight:600;padding:13px 24px;border-radius:var(--r-pill);border:1px solid transparent;cursor:pointer;transition:transform .2s var(--ease),background .2s var(--ease),box-shadow .25s var(--ease),border-color .2s var(--ease),color .2s var(--ease);white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#04101f}
+.btn-primary:hover{background:var(--accent-soft);box-shadow:0 0 0 1px rgba(0,217,255,.5),0 10px 34px rgba(0,217,255,.28)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--hairline)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent-soft)}
+
+.arrow-link{display:inline-flex;align-items:center;gap:.4em;font-size:15px;font-weight:500;color:var(--text);transition:gap .2s var(--ease),color .2s var(--ease)}
+.arrow-link svg{width:16px;height:16px;transition:transform .2s var(--ease)}
+.arrow-link:hover{gap:.7em;color:var(--accent-soft)}
+.arrow-link:hover svg{transform:translateX(2px)}
+
+.mark{width:26px;height:26px;color:var(--accent);flex:0 0 auto;filter:drop-shadow(0 0 6px rgba(0,217,255,.55))}
+
+.orb{
+  position:absolute;border-radius:50%;filter:blur(6px);
+  background:
+    radial-gradient(closest-side at 38% 32%, var(--accent), transparent 66%),
+    radial-gradient(closest-side at 68% 40%, var(--blue), transparent 70%),
+    radial-gradient(closest-side at 58% 72%, #0b3a6b, transparent 72%),
+    radial-gradient(closest-side at 30% 70%, rgba(184,115,51,.5), transparent 70%),
+    radial-gradient(circle, #0b1f36, transparent 78%);
+  animation:orb-rotate 18s linear infinite, orb-morph 12s var(--ease) infinite;
+}
+@keyframes orb-rotate{to{transform:rotate(360deg)}}
+@keyframes orb-morph{0%,100%{border-radius:50%}33%{border-radius:60% 40% 55% 45%}66%{border-radius:42% 58% 45% 55%}}
+
+header.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;backdrop-filter:saturate(160%) blur(12px);background:rgba(7,20,38,.72);border-bottom:1px solid var(--hairline)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-tech);font-weight:600;font-size:20px;letter-spacing:.04em;color:var(--text)}
+.nav-links{display:flex;gap:6px}
+.nav-links a{padding:8px 14px;border-radius:var(--r-pill);font-size:15px;color:var(--text-soft);transition:background .15s var(--ease),color .15s var(--ease)}
+.nav-links a:hover{background:rgba(0,217,255,.10);color:var(--accent-soft)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-toggle{display:none}
+
+section,.hero,.cta-band{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:var(--pad) 0;position:relative}
+
+.hero{text-align:center;align-items:center;padding-top:calc(var(--nav-h) + 40px);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(900px 600px at 50% 26%, rgba(0,217,255,.12), transparent 60%),radial-gradient(1100px 700px at 50% 4%, rgba(11,31,54,.9), transparent 72%)}
+.hero .hero-orb{width:96px;height:96px;position:relative;margin-bottom:28px;filter:drop-shadow(0 0 28px rgba(0,217,255,.35))}
+.hero h1{font-size:var(--hero-size);max-width:14ch}
+.cursor{color:var(--accent);font-weight:400;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero .lede{margin:26px auto 30px;text-align:center}
+.hero .accent-line{margin:0 auto 34px}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.play{display:inline-flex;align-items:center;gap:.55em;margin-top:34px;font-size:14px;color:var(--steel)}
+.play .disc{width:30px;height:30px;border-radius:50%;border:1px solid var(--hairline);display:grid;place-items:center;transition:border-color .2s var(--ease),color .2s var(--ease)}
+.play:hover .disc{border-color:var(--accent);color:var(--accent-soft)}
+
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(32px,4.4vw,63px);max-width:16ch}
+.sec-head .eyebrow{margin-bottom:14px;display:block}
+.carousel-nav{display:flex;gap:10px}
+.cbtn{width:48px;height:48px;border-radius:50%;border:1px solid var(--hairline);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:.2s var(--ease)}
+.cbtn:hover{border-color:var(--accent);color:var(--accent-soft)}
+
+.rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.card{scroll-snap-align:start;flex:0 0 auto;background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column}
+.use-card{width:380px}
+.card-head{aspect-ratio:16/10;position:relative;overflow:hidden;background:var(--black)}
+.card-head .orb{width:160%;height:160%;top:-30%;left:-30%;opacity:.92}
+.card-body{padding:24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.badge{align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:var(--r-pill);background:rgba(0,217,255,.12);color:var(--accent-soft);border:1px solid rgba(0,217,255,.30)}
+.badge.copper{background:rgba(184,115,51,.16);color:var(--copper-lt);border-color:rgba(184,115,51,.40)}
+.card-body h3{font-size:22px}
+.card-body p{font-size:15px;line-height:1.5;color:var(--text-soft);flex:1}
+
+.showpiece .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.show-card{position:relative;overflow:hidden;border:1px solid var(--hairline);border-radius:var(--r-xl);background:var(--surface);padding:48px;min-height:440px;display:flex;flex-direction:column;justify-content:flex-end;gap:18px}
+.show-card .orb{width:340px;height:340px;top:-90px;right:-90px;opacity:.6}
+.show-card h3{font-size:clamp(32px,3.6vw,56px);max-width:12ch;position:relative}
+.show-card .lede{max-width:26ch;position:relative}
+.show-card .row{display:flex;gap:10px;position:relative;flex-wrap:wrap}
+
+.blog-card{width:320px}
+.blog-card .card-head{aspect-ratio:16/9}
+.meta{font-size:12px;color:var(--steel);letter-spacing:.02em}
+.blog-card h4{font-size:18px;line-height:1.2}
+
+.cta-band{background:var(--paper);color:var(--ink);text-align:center;align-items:center;overflow:hidden}
+.cta-band .orb{width:520px;height:520px;opacity:.22;top:50%;left:50%;transform:translate(-50%,-50%);position:absolute}
+.cta-band .inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:30px;padding-left:24px;border-left:6px solid var(--copper)}
+.cta-band h2{font-size:clamp(36px,6vw,90px);max-width:16ch;color:var(--ink)}
+.cta-band .cursor{color:var(--copper)}
+
+footer{background:var(--canvas-2);border-top:1px solid var(--hairline);padding:72px 0 40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.foot-tag{font-family:var(--font-display);font-size:20px;font-weight:var(--w-display);max-width:20ch;letter-spacing:-.01em;color:var(--text)}
+.foot-col h5{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);margin-bottom:16px;font-weight:600;font-family:var(--font-body)}
+.foot-col a{display:block;font-size:15px;color:var(--text-soft);padding:5px 0;transition:color .15s var(--ease)}
+.foot-col a:hover{color:var(--accent-soft)}
+.wordmark{font-family:var(--font-tech);font-weight:700;font-size:clamp(64px,18vw,300px);line-height:.85;letter-spacing:.02em;background:linear-gradient(180deg,var(--accent-soft),var(--accent) 45%,var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin:18px 0 36px}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--hairline);padding-top:24px;flex-wrap:wrap}
+.foot-bottom .legal{display:flex;gap:20px;font-size:13px;color:var(--steel)}
+.foot-bottom .legal a:hover{color:var(--text)}
+
+@media(max-width:900px){
+  :root{--pad:80px}
+  section,.hero,.cta-band{min-height:auto}
+  .hero{min-height:90vh}
+  .nav-links{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--canvas);border-bottom:1px solid var(--hairline);padding:16px;gap:4px}
+  .nav-toggle{display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--hairline);border-radius:var(--r-pill);background:transparent;color:var(--text);cursor:pointer}
+  .showpiece .cols{grid-template-columns:1fr}
+  .show-card{padding:32px;min-height:auto}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .foot-tag{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .container{padding:0 20px}
+  .foot-grid{grid-template-columns:1fr}
+  .hero-ctas{flex-direction:column;width:100%;max-width:300px}
+  .hero-ctas .btn{justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- 01 · NAV -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3.5V11"/><path d="M7.4 5.8a8 8 0 1 0 9.2 0"/></svg>
+      MAOS
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#systemet">Systemet</a>
+      <a href="#sa-funkar">Så funkar det</a>
+      <a href="#bevis">Bevis</a>
+      <a href="#bygglogg">Bygglogg</a>
+    </nav>
+    <div class="nav-right">
+      <button class="nav-toggle" id="navtoggle" aria-label="Meny">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </button>
+      <a class="btn btn-primary" href="#boka">Boka demo</a>
+    </div>
+  </div>
+</header>
+
+<!-- 02 · HERO -->
+<header class="hero" id="top">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center">
+    <div class="hero-orb"><span class="orb" style="inset:0"></span></div>
+    <h1><span id="typed"></span><span class="cursor">_</span></h1>
+    <p class="lede">MAOS är AI-operativsystemet för byggkonsulter. Inte en chatbot: ett lager ovanpå hela arbetsdagen. Mejl, avtal, protokoll, tid och beslut blir ett system.</p>
+    <div class="accent-line"></div>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#boka">Boka demo</a>
+      <a class="btn btn-ghost" href="#systemet">Se systemet</a>
+    </div>
+    <a class="play" href="#sa-funkar">
+      <span class="disc"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2 1l6 4-6 4z"/></svg></span>
+      Så funkar MAOS
+    </a>
+  </div>
+</header>
+
+<!-- 03 · SYSTEMET -->
+<section id="systemet">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Systemet</span>
+        <h2>Sex system. En arbetsyta.</h2>
+      </div>
+      <div class="carousel-nav">
+        <button class="cbtn" data-rail="systemet-rail" data-dir="-1" aria-label="Föregående"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="cbtn" data-rail="systemet-rail" data-dir="1" aria-label="Nästa"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+    <div class="rail" id="systemet-rail">
+      <article class="card use-card">
+        <div class="card-head"><span class="orb"></span></div>
+        <div class="card-body">
+          <span class="badge">Briefing</span>
+          <h3>Morgonbriefing på röstkommando</h3>
+          <p>Allt som hänt och allt som väntar, på din iPhone 06:30. Utan att logga in i sex system.</p>
+          <a class="arrow-link" href="#boka">Boka demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card use-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-3s"></span></div>
+        <div class="card-body">
+          <span class="badge">Mejl</span>
+          <h3>Inboxen som sorterar sig själv</h3>
+          <p>Inkommande mejl läses, klassas och utkast skrivs i din ton. Du godkänner; du skriver inte.</p>
+          <a class="arrow-link" href="#boka">Boka demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card use-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-6s"></span></div>
+        <div class="card-body">
+          <span class="badge">Protokoll</span>
+          <h3>Besiktningen klar samma dag</h3>
+          <p>Foton, röstnoteringar och fältanteckningar blir ett färdigt utlåtande innan du når bilen.</p>
+          <a class="arrow-link" href="#boka">Boka demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card use-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-9s"></span></div>
+        <div class="card-body">
+          <span class="badge">Anbud</span>
+          <h3>Upphandlingar lästa på minuter</h3>
+          <p>Anbudsfabriken skannar portalerna, drar ut kraven och bygger ett utkast du redigerar.</p>
+          <a class="arrow-link" href="#boka">Boka demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card use-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-12s"></span></div>
+        <div class="card-body">
+          <span class="badge">Tid</span>
+          <h3>Tidrapportering på en kvart</h3>
+          <p>Fakturerbara timmar fångas från kalender och mejl, matchas mot rätt projekt i Fortnox.</p>
+          <a class="arrow-link" href="#boka">Boka demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · SÅ FUNKAR DET (grund + moduler) -->
+<section id="sa-funkar" class="showpiece">
+  <div class="container">
+    <div class="sec-head"><div><span class="eyebrow">Så funkar det</span><h2>Grund plus moduler</h2></div></div>
+    <div class="cols">
+      <article class="show-card">
+        <span class="orb"></span>
+        <span class="badge">MAOS Core</span>
+        <h3>Grunden som binder ihop allt</h3>
+        <p class="lede">Briefing, mejl, kalender, tid och Fortnox i ett lager. Byggt på systemen du redan betalar för.</p>
+        <div class="row">
+          <a class="btn btn-primary" href="#boka">Boka demo</a>
+          <a class="btn btn-ghost" href="#bevis">Se bevis</a>
+        </div>
+      </article>
+      <article class="show-card">
+        <span class="orb" style="animation-delay:-7s"></span>
+        <span class="badge copper">Moduler</span>
+        <h3>Projektpuls och InspectIQ</h3>
+        <p class="lede">Är projektet i fas? Kan jag lyfta? Vad måste beslutas före nästa steg? Fasavstämning per projekt och kontraktsform.</p>
+        <div class="row">
+          <a class="btn btn-primary" href="#boka">Få åtkomst</a>
+          <a class="btn btn-ghost" href="#systemet">Utforska systemet</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · BEVIS -->
+<section id="bevis">
+  <div class="container">
+    <div class="sec-head"><div><span class="eyebrow">Bevis</span><h2>Byggt på ett bolag som levererar, inte en pitch</h2></div></div>
+    <div class="rail" id="bevis-rail">
+      <article class="card use-card" style="width:300px">
+        <div class="card-body" style="padding:32px">
+          <span class="eyebrow">Tid</span>
+          <h3 style="font-size:48px">2 h → 15 min</h3>
+          <p>Tidrapporteringen krympt från två timmar varannan vecka till under en kvart.</p>
+        </div>
+      </article>
+      <article class="card use-card" style="width:300px">
+        <div class="card-body" style="padding:32px">
+          <span class="eyebrow">Briefing</span>
+          <h3 style="font-size:48px">06:30</h3>
+          <p>Hela dagen sammanställd på din iPhone innan resten vaknar.</p>
+        </div>
+      </article>
+      <article class="card use-card" style="width:300px">
+        <div class="card-body" style="padding:32px">
+          <span class="eyebrow">Mejl</span>
+          <h3 style="font-size:48px">Utkast</h3>
+          <p>Rutinmejl utkastade innan en människa tittar. Du godkänner och skickar.</p>
+        </div>
+      </article>
+      <article class="card use-card" style="width:300px">
+        <div class="card-body" style="padding:32px">
+          <span class="eyebrow">Stack</span>
+          <h3 style="font-size:48px">Din stack</h3>
+          <p>Kör på Outlook, OneDrive och Fortnox du redan har. Ingen migrering, ingen inlåsning.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · BYGGLOGG -->
+<section id="bygglogg">
+  <div class="container">
+    <div class="sec-head">
+      <div><span class="eyebrow">Bygglogg</span><h2>Vad vi bygger just nu</h2></div>
+      <div class="carousel-nav">
+        <button class="cbtn" data-rail="bygglogg-rail" data-dir="-1" aria-label="Föregående"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="cbtn" data-rail="bygglogg-rail" data-dir="1" aria-label="Nästa"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+    <div class="rail" id="bygglogg-rail">
+      <article class="card blog-card">
+        <div class="card-head"><span class="orb"></span></div>
+        <div class="card-body">
+          <span class="meta">Jun 2026 · Bygglogg</span>
+          <h4>Inboxen från heltid till bakgrund</h4>
+          <a class="arrow-link" href="#bygglogg">Läs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card blog-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-4s"></span></div>
+        <div class="card-body">
+          <span class="meta">Maj 2026 · Princip</span>
+          <h4>Utkast, aldrig autonom leverans</h4>
+          <a class="arrow-link" href="#bygglogg">Läs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card blog-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-8s"></span></div>
+        <div class="card-body">
+          <span class="meta">Maj 2026 · Fält</span>
+          <h4>Besiktningsutlåtanden samma dag, hela vägen</h4>
+          <a class="arrow-link" href="#bygglogg">Läs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card blog-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-12s"></span></div>
+        <div class="card-body">
+          <span class="meta">Apr 2026 · Metod</span>
+          <h4>Varför vi automatiserar ett flöde i taget</h4>
+          <a class="arrow-link" href="#bygglogg">Läs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card blog-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-15s"></span></div>
+        <div class="card-body">
+          <span class="meta">Apr 2026 · Bygglogg</span>
+          <h4>Regelverket i en enda assistent</h4>
+          <a class="arrow-link" href="#bygglogg">Läs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="card blog-card">
+        <div class="card-head"><span class="orb" style="animation-delay:-18s"></span></div>
+        <div class="card-body">
+          <span class="meta">Mar 2026 · Princip</span>
+          <h4>System framför person</h4>
+          <a class="arrow-link" href="#bygglogg">Läs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · CTA (ljus invers) -->
+<section class="cta-band" id="boka">
+  <span class="orb"></span>
+  <div class="container inner">
+    <h2><span id="typed2"></span><span class="cursor">_</span></h2>
+    <a class="btn btn-primary" href="mailto:daniel.mancilla@maleon.se?subject=MAOS%20demo">Boka demo</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-tag">AI-operativsystemet för byggkonsulter med fler projekt än timmar.</div>
+      <div class="foot-col">
+        <h5>Produkt</h5>
+        <a href="#systemet">Systemet</a>
+        <a href="#sa-funkar">Så funkar det</a>
+        <a href="#boka">Boka demo</a>
+      </div>
+      <div class="foot-col">
+        <h5>Bolag</h5>
+        <a href="#bevis">Bevis</a>
+        <a href="#bygglogg">Bygglogg</a>
+        <a href="mailto:daniel.mancilla@maleon.se">Kontakt</a>
+      </div>
+      <div class="foot-col">
+        <h5>Juridik</h5>
+        <a href="#">Integritet</a>
+        <a href="#">Villkor</a>
+        <a href="#">Datahantering</a>
+      </div>
+    </div>
+    <div class="accent-line"></div>
+    <div class="wordmark">MAOS</div>
+    <div class="foot-bottom">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3.5V11"/><path d="M7.4 5.8a8 8 0 1 0 9.2 0"/></svg>
+        MAOS
+      </div>
+      <div class="legal">
+        <a href="#">© 2026 MAOS</a>
+        <a href="#">En del av Maleon · Byggt i Sverige</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navtoggle').addEventListener('click',()=>{
+  document.getElementById('navlinks').classList.toggle('open');
+});
+document.querySelectorAll('.cbtn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const rail=document.getElementById(b.dataset.rail);
+    rail.scrollBy({left:(+b.dataset.dir)*400,behavior:'smooth'});
+  });
+});
+function typeInto(el,text,speed,done){
+  let i=0;
+  (function step(){el.textContent=text.slice(0,i);if(i++<text.length)setTimeout(step,speed);else if(done)done();})();
+}
+const mq=window.matchMedia('(prefers-reduced-motion:reduce)');
+const heroText="Fler projekt än timmar";
+const ctaText="Bygg arbetsdagen som ett system.";
+if(mq.matches){
+  document.getElementById('typed').textContent=heroText;
+  document.getElementById('typed2').textContent=ctaText;
+}else{
+  typeInto(document.getElementById('typed'),heroText,55);
+  const t2=document.getElementById('typed2');
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){typeInto(t2,ctaText,40);io.disconnect();}});},{threshold:.5});
+  io.observe(document.querySelector('.cta-band'));
+}
+</script>
+</body>
+</html>
