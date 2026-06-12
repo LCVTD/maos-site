@@ -1,0 +1,371 @@
+/* MAOS – maos.se utkast. Skuren massa v3. Teman styrs av CSS-variabler; html.dark är default. */
+
+:root {
+  --bg: #F5F5F5;
+  --bg-rgb: 245, 245, 245;
+  --surface: #E9E9E9;
+  --panel: #FCFCFC;
+  --ink: #0A0A0A;
+  --ink-strong: #000000;
+  --ink-soft: rgba(10, 10, 10, 0.66);
+  --ink-faint: rgba(10, 10, 10, 0.45);
+  --line: rgba(10, 10, 10, 0.16);
+  --line-soft: rgba(10, 10, 10, 0.09);
+  --flow: #0A0A0A;
+  --flow-bright: #0A0A0A;
+  --accent-rgb: 10, 10, 10;
+  --glass-bg: rgba(10, 10, 10, 0.035);
+  --glass-edge-a: rgba(10, 10, 10, 0.35);
+  --glass-edge-b: rgba(10, 10, 10, 0.12);
+  --pill-bg: #0A0A0A;
+  --pill-ink: #F5F5F5;
+  --shiny-grad: linear-gradient(to right, #ABABAB 0%, #6B6B6B 12.5%, #1A1A1A 32.5%, #000000 50%, #6B6B6B 67.5%, #ABABAB 87.5%, #ABABAB 100%);
+  --watermark-grad: linear-gradient(to right, #BDBDBD 0%, #4A4A4A 45%, #000000 100%);
+  --grain-opacity: 0.05;
+}
+
+html.dark {
+  --bg: #000000;
+  --bg-rgb: 0, 0, 0;
+  --surface: #0E0E0E;
+  --panel: #070707;
+  --ink: #EDEDED;
+  --ink-strong: #FFFFFF;
+  --ink-soft: rgba(237, 237, 237, 0.62);
+  --ink-faint: rgba(237, 237, 237, 0.40);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-soft: rgba(255, 255, 255, 0.07);
+  --flow: #FFFFFF;
+  --flow-bright: #FFFFFF;
+  --accent-rgb: 255, 255, 255;
+  --glass-bg: rgba(255, 255, 255, 0.012);
+  --glass-edge-a: rgba(255, 255, 255, 0.45);
+  --glass-edge-b: rgba(255, 255, 255, 0.15);
+  --pill-bg: #F5F5F5;
+  --pill-ink: #000000;
+  --shiny-grad: linear-gradient(to right, #4A4A4A 0%, #6B6B6B 12.5%, #FFFFFF 32.5%, #D9D9D9 50%, #6B6B6B 67.5%, #4A4A4A 87.5%, #4A4A4A 100%);
+  --watermark-grad: linear-gradient(to right, #1C1C1C 0%, #6B6B6B 40%, #FFFFFF 100%);
+  --grain-opacity: 0.07;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-x: hidden;
+}
+::selection { background: rgba(var(--accent-rgb), 0.25); color: var(--ink-strong); }
+section { scroll-margin-top: 84px; }
+
+::-webkit-scrollbar { width: 9px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(var(--accent-rgb), 0.35); border-radius: 99px; border: 2px solid var(--bg); }
+
+:focus-visible { outline: 2px solid var(--flow-bright); outline-offset: 3px; border-radius: 4px; }
+
+.skip-link {
+  position: fixed; left: 16px; top: -60px; z-index: 100;
+  background: var(--pill-bg); color: var(--pill-ink);
+  padding: 10px 18px; border-radius: 99px; font-size: 13px;
+  transition: top 0.25s ease;
+}
+.skip-link:focus { top: 16px; }
+
+/* Nätet som aldrig syns men alltid känns: två guidelinjer vid innehållets kanter */
+.guide-line {
+  position: fixed; top: 0; bottom: 0; width: 1px; z-index: 5;
+  background: var(--line-soft); pointer-events: none;
+  transform-origin: top; transform: scaleY(0);
+}
+
+.grain {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  opacity: var(--grain-opacity); mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* Skinande gradientord, Auras teknik med MAOS-stopp och noise-filter */
+.shiny-word {
+  background-image: var(--shiny-grad);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: url(#maos-noise);
+  animation: shiny 6s linear infinite;
+}
+@keyframes shiny { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+
+/* Liquid glass: gradientkant maskad via mask-composite, inga skuggor */
+.liquid-glass {
+  background: var(--glass-bg);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  position: relative; overflow: hidden;
+}
+.liquid-glass::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    var(--glass-edge-a) 0%, var(--glass-edge-b) 20%,
+    rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%,
+    var(--glass-edge-b) 80%, var(--glass-edge-a) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Knappar */
+.pill-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 99px; background: var(--pill-bg); color: var(--pill-ink);
+  font-weight: 500; font-size: 14px; padding: 12px 22px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  cursor: pointer; border: none; white-space: nowrap;
+}
+.pill-primary:hover { opacity: 0.9; }
+.pill-primary:active { transform: scale(0.98); }
+.pill-primary .chev { transition: transform 0.2s ease; }
+.pill-primary:hover .chev { transform: translateX(2px); }
+
+.pill-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 99px; border: 1px solid var(--line); color: var(--ink);
+  font-weight: 500; font-size: 14px; padding: 12px 22px;
+  background: transparent; cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+.pill-ghost:hover { background: rgba(var(--bg-rgb), 0.4); border-color: var(--ink-faint); }
+
+.chip {
+  font-size: 12px; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 99px; padding: 6px 13px;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.chip:hover { border-color: rgba(var(--accent-rgb), 0.5); color: var(--ink); }
+
+.eyebrow-dot { width: 6px; height: 6px; border-radius: 99px; background: var(--flow-bright); }
+
+.mono-label {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.14em; color: rgba(var(--accent-rgb), 0.45);
+}
+
+.eyebrow-jakarta {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700; font-size: 11px; letter-spacing: 0.2em;
+  color: var(--ink);
+}
+
+.serif-accent { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; }
+
+/* Nav */
+#site-nav { transition: background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease; border-bottom: 1px solid transparent; }
+#site-nav.nav-scrolled {
+  background: rgba(var(--bg-rgb), 0.72);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--line-soft);
+}
+.nav-link {
+  color: var(--ink-soft); font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  transition: color 0.2s ease;
+}
+.nav-link:hover { color: var(--ink-strong); }
+
+/* Fullskärmsmeny på mobil enligt referensen */
+#mobile-menu {
+  position: fixed; inset: 0; z-index: 45; padding-top: 76px;
+  transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  clip-path: inset(0 0 100% 0); opacity: 0; pointer-events: none;
+}
+#mobile-menu.open { clip-path: inset(0 0 0% 0); opacity: 1; pointer-events: auto; }
+
+#theme-toggle svg { transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+#theme-toggle.flipped svg { transform: rotate(180deg); }
+
+/* Hero */
+#hero { touch-action: pan-y; }
+#hero-canvas canvas { display: block; width: 100%; height: 100%; }
+.hero-margin-label { position: absolute; z-index: 12; pointer-events: none; }
+
+/* CodeNest-strukturen: gridlinjer på 25/50/75, central glöd, bottenfade */
+.hero-gridline {
+  position: absolute; top: 0; bottom: 0; width: 1px; z-index: 6;
+  background: rgba(var(--accent-rgb), 0.08); pointer-events: none;
+}
+.hero-glow {
+  position: absolute; left: 50%; top: 8%; transform: translateX(-50%);
+  width: min(920px, 92vw); height: 360px; z-index: 5;
+  background: radial-gradient(ellipse at center, rgba(var(--accent-rgb), 0.16), rgba(var(--accent-rgb), 0.04) 45%, transparent 72%);
+  filter: blur(25px); pointer-events: none;
+}
+.hero-bottom-fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 36%; z-index: 6;
+  background: linear-gradient(to top, rgba(var(--bg-rgb), 0.92), transparent);
+  pointer-events: none;
+}
+.ring-logo { display: inline-block; }
+.ring-logo svg { display: block; width: 100%; height: 100%; }
+
+.scroll-cue { width: 1px; height: 52px; background: var(--line); position: relative; overflow: hidden; }
+.scroll-cue::after {
+  content: ''; position: absolute; left: 0; top: -40%; width: 100%; height: 40%;
+  background: var(--flow-bright); animation: cue-drop 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes cue-drop { 0% { top: -40%; } 60%, 100% { top: 110%; } }
+
+
+/* Kontrolltornet */
+.tl-dot { width: 11px; height: 11px; border-radius: 99px; }
+.ct-row { border-left: 2px solid transparent; transition: background 0.2s ease; cursor: default; }
+.ct-row:hover { background: rgba(var(--bg-rgb), 0.35); }
+.ct-row.active { border-left-color: var(--flow-bright); background: rgba(var(--accent-rgb), 0.06); }
+.ct-nav-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; border-radius: 8px; color: var(--ink-soft); font-size: 13px; transition: background 0.2s ease, color 0.2s ease; cursor: default; }
+.ct-nav-item:hover { background: rgba(var(--bg-rgb), 0.4); }
+.ct-nav-item.active { background: rgba(var(--bg-rgb), 0.55); color: var(--ink); }
+html.dark .ct-nav-item.active { background: rgba(255, 255, 255, 0.08); }
+html.dark .ct-nav-item:hover { background: rgba(255, 255, 255, 0.04); }
+html.dark .ct-row:hover { background: rgba(255, 255, 255, 0.03); }
+
+/* Triagekort */
+.triage-block { border-radius: 12px; padding: 12px 14px; }
+
+/* Stegdemos */
+.demo-frame { background: var(--panel); border: 1px solid var(--line-soft); border-radius: 14px; overflow: hidden; }
+.demo-frame svg { display: block; width: 100%; height: auto; }
+.demo-mailrow { fill: var(--surface); }
+.demo-ink { fill: var(--ink); }
+.demo-soft { fill: var(--ink-faint); }
+.demo-line { stroke: var(--line); }
+
+/* Statistikkort */
+.stat-value { font-size: clamp(28px, 3.2vw, 40px); font-weight: 600; letter-spacing: -0.02em; color: var(--ink-strong); }
+.stat-value .accent { color: var(--flow-bright); }
+
+/* Watermark */
+.watermark {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  font-weight: 800; letter-spacing: -0.05em; line-height: 0.9;
+  font-size: clamp(5rem, 16vw, 15rem); white-space: nowrap;
+  background-image: var(--watermark-grad);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: url(#maos-noise-2);
+  opacity: 0.16; pointer-events: none; user-select: none;
+}
+
+/* Formulär */
+.field {
+  width: 100%; background: rgba(var(--bg-rgb), 0.45);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px; font-size: 14px; color: var(--ink);
+  transition: border-color 0.2s ease;
+}
+.field::placeholder { color: var(--ink-faint); }
+.field:focus { outline: none; border-color: rgba(var(--accent-rgb), 0.6); }
+
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 16px);
+  background: var(--pill-bg); color: var(--pill-ink);
+  padding: 12px 20px; border-radius: 99px; font-size: 13px; font-weight: 500;
+  opacity: 0; pointer-events: none; z-index: 90;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* Animatic-spelarna: videochrome kring GSAP-scener (demo + testimonial) */
+.dp-stage {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+  background: var(--panel); min-height: 280px;
+}
+.dp-scene {
+  position: absolute; inset: 0; padding: 28px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px; text-align: center; opacity: 0;
+}
+.dp-tag { position: absolute; top: 16px; left: 18px; }
+.dp-badge { position: absolute; bottom: 12px; left: 18px; opacity: 0.65; pointer-events: none; }
+.dp-wave { display: flex; gap: 4px; align-items: center; height: 28px; }
+.dp-wave i { width: 3px; height: 9px; background: var(--flow-bright); border-radius: 2px; display: block; }
+.dp-transcript { font-size: clamp(14px, 2vw, 18px); color: var(--ink); max-width: 460px; }
+#dp-type { display: inline-block; clip-path: inset(0 100% 0 0); }
+.dp-rows { width: min(440px, 86%); display: grid; gap: 8px; text-align: left; }
+.dp-row {
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 13px;
+  font-size: 13px; color: var(--ink-soft); background: rgba(var(--bg-rgb), 0.5);
+}
+.dp-row.hot { border-color: rgba(var(--accent-rgb), 0.7); }
+.dp-summary {
+  width: min(440px, 86%); border: 1px solid rgba(var(--accent-rgb), 0.4);
+  background: rgba(var(--accent-rgb), 0.05); border-radius: 12px; padding: 12px 14px;
+  font-size: 13px; line-height: 1.5; color: var(--ink-soft); text-align: left; opacity: 0;
+}
+.dp-checks { display: grid; gap: 11px; text-align: left; }
+.dp-check { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--ink); opacity: 0; }
+.dp-check svg { color: var(--flow-bright); flex-shrink: 0; }
+.dp-cursor {
+  position: absolute; left: 0; top: 0; width: 18px; height: 18px; z-index: 5;
+  border-radius: 99px; border: 2px solid var(--ink-strong);
+  background: rgba(var(--bg-rgb), 0.55); opacity: 0; pointer-events: none;
+}
+.dp-bar {
+  display: flex; align-items: center; gap: 14px; padding: 12px 16px;
+  border-top: 1px solid var(--line-soft);
+}
+.dp-toggle {
+  width: 38px; height: 38px; border-radius: 99px; flex-shrink: 0;
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.dp-toggle:hover { border-color: var(--ink-faint); }
+.dp .dp-ic-pause { display: none; }
+.dp.playing .dp-ic-pause { display: block; }
+.dp.playing .dp-ic-play { display: none; }
+.dp-track { flex: 1; height: 4px; border-radius: 99px; background: rgba(var(--accent-rgb), 0.15); overflow: hidden; }
+.dp-fill { height: 100%; width: 0%; background: var(--flow-bright); }
+.dp-time {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px;
+  letter-spacing: 0.08em; color: var(--ink-faint); flex-shrink: 0;
+}
+
+/* Testimonial-varianten: intervjubild med undertexter och namnskylt */
+.tp-stage { text-align: left; }
+.tp-backdrop {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: flex-end; padding-right: 6%; opacity: 0.15; pointer-events: none;
+}
+.tp-captions { position: absolute; left: 22px; right: 22px; bottom: 96px; min-height: 84px; }
+.tp-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  font-size: clamp(14px, 1.7vw, 18px); line-height: 1.5; color: var(--ink); opacity: 0;
+}
+.tp-lower { position: absolute; left: 22px; bottom: 18px; border-left: 2px solid var(--flow-bright); padding-left: 12px; }
+.tp-name { font-weight: 600; font-size: 14px; color: var(--ink-strong); }
+.tp-wave { position: absolute; right: 18px; bottom: 18px; }
+
+/* Integrationsraden: riktiga logotyper i färg bredvid namnet */
+.logo-item {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--ink-soft); transition: color 0.2s ease;
+}
+.logo-item:hover { color: var(--ink-strong); }
+.logo-item img { height: 26px; width: auto; max-width: 30px; object-fit: contain; display: block; }
+
+/* Reveal-grundläge: scroll.js animerar in. Utan JS förblir allt synligt. */
+html.js [data-reveal], html.js [data-reveal-stagger] > * { opacity: 0; transform: translateY(26px); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .shiny-word, .scroll-cue::after { animation: none; }
+  html.js [data-reveal], html.js [data-reveal-stagger] > * { opacity: 1; transform: none; }
+  * { transition-duration: 0.01ms !important; }
+}

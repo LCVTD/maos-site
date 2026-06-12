@@ -1,0 +1,43 @@
+# MAOS – Maleon AI Operating System
+
+> MAOS är ett AI-operativsystem för svenska byggkonsulter och byggentreprenörer. Det bevakar inkorgen, fångar avrop, ÄTA och deadlines, bygger färdiga utkast (svar, projektupplägg, mappstrukturer, protokoll) och rapporterar. Inget skickas autonomt: varje utkast godkänns manuellt av en människa. MAOS är en del av Maleon-koncernen.
+
+## Vad MAOS gör
+
+- Triagerar inkorgen: avrop, beställningar, ÄTA-signaler, deadlines, kontrollplaner och besiktningar lyfts ur bruset och kategoriseras.
+- Bygger färdiga utkast: svar till beställare, projekt i ekonomisystemet, mappstrukturer i dokumenthantering, mötesprotokoll ur röstanteckningar.
+- Levererar morgonbriefing varje arbetsdag klockan 06:30: projektläge, deadlines och beslut som väntar.
+- Tidrapportering med underlag ur kalender och ekonomisystem: designmål under 15 minuter per period, ned från 2 timmar.
+- Princip: utkast, aldrig autonom leverans. Människan godkänner allt som lämnar systemet.
+
+## Moduler
+
+- MAOS Core: triage, briefing, utkastkedjor, integrationer.
+- Projektpuls: fasavstämning, lyftbedömning och ÄTA-spårning per byggprojekt.
+- InspectIQ: stöd för kontrollansvariga (KA) och besiktningsmän; kontrollplaner, utlåtanden och intyg ur fältanteckningar och foton.
+
+## För vem
+
+Svenska byggkonsulter, kontrollansvariga enligt PBL, entreprenadbesiktningsmän, projekt- och byggledare samt byggentreprenörer som driver fler än tio projekt samtidigt. Kunskapsbasen täcker svensk byggjuridik: AB 04, ABT 06, ABK 09, PBL och BBR.
+
+## Laguppställningen
+
+MAOS ger ett bolag nio roller i ett system: anbudsingenjör, kalkylator, marknadsavdelning, projektledare, byggledare, administratör, kontrollansvarig, besiktningsman och entreprenadjurist. Det som bromsar resan från tio till femtio eller hundra miljoner i omsättning är sällan uppdragen utan rollerna som ska bemannas; när laguppställningen finns i systemet sätter ambitionen gränsen, inte organisationen.
+
+## Teknisk grund
+
+Byggt ovanpå system kunderna redan betalar för: Microsoft Outlook, OneDrive, Teams, Azure, Fortnox, Zapier, Claude (Anthropic) och PLAUD. Inga nya licenser krävs för grundflödet.
+
+## Status
+
+MAOS drivs 2026 i intern drift hos Maleon AB (kund noll): cirka 80 aktiva projekt, fyra bolag och fler än 40 underkonsulter. Ett begränsat antal pilotdialoger tas emot.
+
+## Kontakt
+
+- E-post: info@maos.se
+- Webb: https://maos.se
+- Koncern: Maleon AB, https://maleon.se
+
+## English summary
+
+MAOS (Maleon AI Operating System) is an AI operating system for Swedish construction consultants and contractors. It monitors the inbox, captures call-offs, change orders and deadlines, drafts replies, project setups, folder structures and meeting minutes, and reports daily. Nothing is sent autonomously; every draft requires human approval. Modules: MAOS Core, Projektpuls (project phase tracking) and InspectIQ (inspection and building control support). Built on Microsoft 365, Fortnox, Zapier, Claude and Azure. Operated internally at Maleon AB (customer zero) during 2026. Contact: info@maos.se.
