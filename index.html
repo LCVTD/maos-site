@@ -29,26 +29,9 @@
       if (localStorage.getItem('maos-theme') === 'light') document.documentElement.classList.remove('dark');
     } catch (e) {}
   </script>
-  <script src="js/vendor/tailwind-3.4.16.js"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            night: '#000000', coal: '#0A0A0A', ash: '#161616',
-            silver: '#C7C7C7', offwhite: '#F2F2F2'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
-            jakarta: ['"Plus Jakarta Sans"', 'sans-serif']
-          },
-          maxWidth: { content: '72rem' }
-        }
-      }
-    };
-  </script>
+  <!-- Tailwind 3.4.16: byggd, purgad statisk CSS (ersatte Play CDN-runtimen).
+       Bygg om: npx tailwindcss@3.4.16 -c tailwind.config.js -i tailwind-input.css -o css/tailwind.build.css --minify -->
+  <link rel="stylesheet" href="css/tailwind.build.css">
   <link rel="stylesheet" href="css/styles.css">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <script type="application/ld+json">
