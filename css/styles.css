@@ -295,13 +295,15 @@ html.dark .ct-row:hover { background: rgba(255, 255, 255, 0.03); }
 .dp-wave { display: flex; gap: 4px; align-items: center; height: 28px; }
 .dp-wave i { width: 3px; height: 9px; background: var(--flow-bright); border-radius: 2px; display: block; }
 .dp-transcript { font-size: clamp(14px, 2vw, 18px); color: var(--ink); max-width: 460px; }
-#dp-type { display: inline-block; clip-path: inset(0 100% 0 0); }
+#dp-type { display: inline-block; max-width: 100%; clip-path: inset(0 100% 0 0); }
 .dp-rows { width: min(440px, 86%); display: grid; gap: 8px; text-align: left; }
 .dp-row {
+  display: flex; align-items: center; gap: 8px;
   border: 1px solid var(--line); border-radius: 10px; padding: 10px 13px;
   font-size: 13px; color: var(--ink-soft); background: rgba(var(--bg-rgb), 0.5);
 }
 .dp-row.hot { border-color: rgba(var(--accent-rgb), 0.7); }
+.dp-row-dot { width: 7px; height: 7px; flex-shrink: 0; border-radius: 99px; background: rgba(var(--accent-rgb), 0.55); }
 .dp-summary {
   width: min(440px, 86%); border: 1px solid rgba(var(--accent-rgb), 0.4);
   background: rgba(var(--accent-rgb), 0.05); border-radius: 12px; padding: 12px 14px;
@@ -310,6 +312,22 @@ html.dark .ct-row:hover { background: rgba(255, 255, 255, 0.03); }
 .dp-checks { display: grid; gap: 11px; text-align: left; }
 .dp-check { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--ink); opacity: 0; }
 .dp-check svg { color: var(--flow-bright); flex-shrink: 0; }
+/* Föreslagen åtgärd: numrerade celler (samma cellstil som händelseraderna) och klar-kvittens */
+.dp-steps { width: min(440px, 90%); display: grid; gap: 8px; text-align: left; list-style: none; margin: 0; padding: 0; }
+.dp-step {
+  display: flex; gap: 11px; align-items: center;
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 13px;
+  background: rgba(var(--bg-rgb), 0.5);
+  font-size: 13px; line-height: 1.35; color: var(--ink-soft); opacity: 0;
+}
+.dp-step > span:last-child { min-width: 0; }
+.dp-step-num {
+  width: 22px; height: 22px; flex-shrink: 0; border-radius: 99px;
+  border: 1px solid rgba(var(--accent-rgb), 0.55);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink);
+}
+.dp-done { display: flex; align-items: center; gap: 7px; color: var(--flow-bright); opacity: 0; }
 .dp-cursor {
   position: absolute; left: 0; top: 0; width: 18px; height: 18px; z-index: 5;
   border-radius: 99px; border: 2px solid var(--ink-strong);

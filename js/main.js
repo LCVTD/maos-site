@@ -68,7 +68,10 @@ function tick() {
 tick();
 setInterval(tick, 30000);
 
-// Demoformulär: bygger ett färdigt mejlutkast, inget skickas autonomt
+// Demoformulär: skickar direkt till info@maos.se via Web3Forms (statisk sajt, ingen egen backend).
+// Bot-spärr: dold honungsfälla (company_website) avbryter tyst om ifylld; Web3Forms har eget spamfilter.
+// AKTIVERA: hämta en gratis access key kopplad till info@maos.se på web3forms.com och lägg in nedan.
+const WEB3FORMS_KEY = '68fc42d6-edf9-4632-9c0b-c1bca0174d64';
 const form = document.getElementById('demo-form');
 const toast = document.getElementById('toast');
 let toastTimer;
@@ -80,31 +83,45 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
 }
 
-form?.addEventListener('submit', e => {
+form?.addEventListener('submit', async e => {
   e.preventDefault();
   const data = new FormData(form);
+  // Honungsfälla: människor ser inte fältet. Är det ifyllt är det en bot, avbryt tyst.
+  if ((data.get('company_website') || '').toString().trim()) return;
   const namn = (data.get('namn') || '').toString().trim();
-  const bolag = (data.get('bolag') || '').toString().trim();
   const epost = (data.get('epost') || '').toString().trim();
-  const medd = (data.get('meddelande') || '').toString().trim();
   if (!namn || !epost) {
     showToast('Fyll i namn och e-post så kan vi svara.');
     return;
   }
-  const body = [
-    'Hej Daniel,', '',
-    'Jag vill boka en demo av MAOS.', '',
-    'Namn: ' + namn,
-    'Bolag: ' + (bolag || 'ej angivet'),
-    'E-post: ' + epost, '',
-    medd ? 'Meddelande: ' + medd : '', '',
-    'Skickat från maos.se'
-  ].join('\n');
-  const href = 'mailto:info@maos.se'
-    + '?subject=' + encodeURIComponent('Demobokning MAOS')
-    + '&body=' + encodeURIComponent(body);
-  window.location.href = href;
-  showToast('Mejlutkast öppnat. Skicka det så återkommer vi inom en arbetsdag.');
+  if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'DIN_WEB3FORMS_ACCESS_KEY') {
+    showToast('Formuläret är inte aktiverat än. Lägg in Web3Forms-nyckeln.');
+    return;
+  }
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn) btn.disabled = true;
+  data.delete('company_website');
+  data.append('access_key', WEB3FORMS_KEY);
+  data.append('subject', 'Demobokning MAOS: ' + namn);
+  data.append('from_name', 'maos.se');
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: data
+    });
+    const json = await res.json();
+    if (json.success) {
+      form.reset();
+      showToast('Tack, vi har tagit emot din förfrågan och återkommer inom en arbetsdag.');
+    } else {
+      showToast('Något gick fel. Mejla oss gärna direkt på info@maos.se.');
+    }
+  } catch (err) {
+    showToast('Kunde inte skicka just nu. Mejla oss gärna direkt på info@maos.se.');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 });
 
 // Årtal i sidfoten

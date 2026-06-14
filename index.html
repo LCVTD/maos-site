@@ -31,8 +31,8 @@
   </script>
   <!-- Tailwind 3.4.16: byggd, purgad statisk CSS (ersatte Play CDN-runtimen).
        Bygg om: npx tailwindcss@3.4.16 -c tailwind.config.js -i tailwind-input.css -o css/tailwind.build.css --minify -->
-  <link rel="stylesheet" href="css/tailwind.build.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tailwind.build.css?v=7">
+  <link rel="stylesheet" href="css/styles.css?v=7">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <script type="application/ld+json">
   {
@@ -319,50 +319,50 @@
     <section id="demo" class="py-20 md:py-28">
       <div class="max-w-content mx-auto px-6">
         <div class="max-w-2xl" data-reveal>
-          <p class="flex items-center gap-2.5 mono-label"><span class="eyebrow-dot" aria-hidden="true"></span> SE FLÖDET · 24 SEKUNDER</p>
+          <p class="flex items-center gap-2.5 mono-label"><span class="eyebrow-dot" aria-hidden="true"></span> SE KONTROLLTORNET · 35 SEKUNDER</p>
           <h2 class="mt-5 text-3xl md:text-5xl font-semibold tracking-tight leading-[1.05] text-[color:var(--ink-strong)]">
-            Röst in.<br>Levererat ut.
+            Från inkorg<br>till godkänt.
           </h2>
           <p class="mt-6 text-[color:var(--ink-soft)] max-w-md leading-relaxed">
-            Ett kommando i telefonen räcker: MAOS bygger kedjan och du godkänner med ett klick.
-            Spelaren visar vårt manusutkast; skarp inspelning produceras efter samma scener.
+            En genomgång av kontrolltornet steg för steg: så fångar MAOS en händelse ur inkorgen,
+            sammanfattar den och lägger utkastet klart för ditt godkännande.
           </p>
         </div>
         <div id="demo-player" class="dp liquid-glass rounded-2xl overflow-hidden mt-10" data-reveal>
-          <div class="dp-stage" role="img" aria-label="Animerad demo: ett röstkommando blir projekt, mappar och svar som godkänns med ett klick">
+          <div class="dp-stage" role="img" aria-label="Genomgång av MAOS kontrolltorn: en händelse fångas ur inkorgen, sammanfattas och godkänns med ett klick">
             <div class="dp-scene" data-scene="1">
-              <p class="dp-tag mono-label">01 · RÖSTKOMMANDO</p>
+              <p class="dp-tag mono-label">01 · NY HÄNDELSE I INKORGEN</p>
               <span class="ring-logo w-14 h-14 text-[color:var(--ink)]" aria-hidden="true"></span>
-              <div class="dp-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-              <p class="dp-transcript"><span id="dp-type">"Skapa projektet för Botkyrka-avropet och svara beställaren."</span></p>
+              <p class="dp-transcript"><span id="dp-type">Förfrågan avrop (ramavtal N050S2416): projektledare, nybyggnation.</span></p>
             </div>
             <div class="dp-scene" data-scene="2">
-              <p class="dp-tag mono-label">02 · MAOS BYGGER UTKAST</p>
+              <p class="dp-tag mono-label">02 · KONTROLLTORNET</p>
               <div class="dp-rows">
-                <div class="dp-row" id="dp-row-target"><span class="font-medium text-[color:var(--ink)]">Botkyrka kommun</span> · Avrop: byggledning kommunhus</div>
-                <div class="dp-row">PEAB Sverige · ÄTA 14: stomkomplettering</div>
-                <div class="dp-row">Fortnox · Tidrapport vecka 24</div>
+                <div class="dp-row" id="dp-row-target"><span class="dp-row-dot" aria-hidden="true"></span><span><span class="font-medium text-[color:var(--ink)]">Avropsförfrågan</span> · ramavtal N050S2416</span></div>
+                <div class="dp-row"><span class="dp-row-dot" aria-hidden="true"></span><span>Västerås stad · beställning</span></div>
+                <div class="dp-row"><span class="dp-row-dot" aria-hidden="true"></span><span>Tilldelningsbeslut · besiktningsmän Gränby A-hall</span></div>
               </div>
               <div class="dp-summary">
                 <span class="font-medium text-[color:var(--ink)]">Sammanfattning av MAOS:</span>
-                tilldelningsbeslut bekräftat. Föreslagen kedja: projekt i Fortnox, mappstruktur i OneDrive, svar till beställaren.
+                avropsförfrågan på ramavtal N050S2416, projektledare nybyggnation. Maleon har kapacitet och referensuppdrag inom kommunal nybyggnation.
               </div>
             </div>
             <div class="dp-scene" data-scene="3">
-              <p class="dp-tag mono-label">03 · DU GODKÄNNER</p>
+              <p class="dp-tag mono-label">03 · FÖRESLAGEN ÅTGÄRD</p>
+              <ol class="dp-steps">
+                <li class="dp-step"><span class="dp-step-num">1</span><span>Svarsutkast med intresse, budget och CV</span></li>
+                <li class="dp-step"><span class="dp-step-num">2</span><span>Bifoga budgetoffert och CV för projektledare</span></li>
+                <li class="dp-step"><span class="dp-step-num">3</span><span>Lägg i Outlook-utkast för din granskning</span></li>
+              </ol>
               <span class="pill-primary dp-approve uppercase !text-xs font-bold tracking-[0.14em]">Godkänn utkast</span>
-              <div class="dp-checks">
-                <p class="dp-check"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 9.2l2.4 2.4 4.6-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Projekt skapat i Fortnox</p>
-                <p class="dp-check"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 9.2l2.4 2.4 4.6-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Mappstruktur i OneDrive</p>
-                <p class="dp-check"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 9.2l2.4 2.4 4.6-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Svar till beställaren, klart att skicka</p>
-              </div>
+              <p class="dp-done mono-label"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> KLART I OUTLOOK</p>
             </div>
             <div class="dp-scene" data-scene="4">
               <span class="ring-logo dp-end-ring w-20 h-20 text-[color:var(--ink)]" aria-hidden="true"></span>
-              <p class="text-lg md:text-xl font-semibold text-[color:var(--ink-strong)]">Det som tog timmar tar minuter.</p>
+              <p class="text-lg md:text-xl font-semibold text-[color:var(--ink-strong)]">Det som tog timmar tar nu minuter.</p>
             </div>
             <div class="dp-cursor" id="dp-cursor" aria-hidden="true"></div>
-            <p class="dp-badge mono-label">UTKAST · ANIMATIC FÖR PRODUKTION</p>
+            <p class="dp-badge mono-label">MAOS · KONTROLLTORN</p>
           </div>
           <div class="dp-bar">
             <button type="button" class="dp-toggle" aria-label="Spela eller pausa demon">
@@ -370,7 +370,7 @@
               <svg class="dp-ic-pause" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M3 2h3v10H3zM8 2h3v10H8z"/></svg>
             </button>
             <div class="dp-track" aria-hidden="true"><div class="dp-fill"></div></div>
-            <span class="dp-time">0:00 / 0:24</span>
+            <span class="dp-time">0:00 / 0:35</span>
             <button type="button" id="dp-voice-toggle" class="dp-toggle" aria-pressed="true" aria-label="Ljud på" title="Ljud på">
               <svg id="dp-voice-svg" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M1.5 5.5h2L7 2.5v9L3.5 8.5h-2a.5.5 0 01-.5-.5V6a.5.5 0 01.5-.5z" fill="currentColor"/>
@@ -786,6 +786,7 @@
           <p class="mt-7 mono-label">HELLRE DIREKT? <a class="text-[color:var(--flow)] hover:underline" href="mailto:info@maos.se">INFO@MAOS.SE</a></p>
         </div>
         <form id="demo-form" class="liquid-glass rounded-3xl p-7 md:p-9" data-reveal novalidate>
+          <input type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;">
           <div class="grid sm:grid-cols-2 gap-4">
             <label class="block">
               <span class="text-xs font-medium text-[color:var(--ink-soft)]">Namn</span>
@@ -863,9 +864,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous"></script>
-  <script src="js/ring.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/scroll.js"></script>
-  <script type="module" src="js/hero-scene.js"></script>
+  <script src="js/ring.js?v=7"></script>
+  <script src="js/main.js?v=9"></script>
+  <script src="js/scroll.js?v=8"></script>
+  <script type="module" src="js/hero-scene.js?v=7"></script>
 </body>
 </html>
