@@ -282,8 +282,13 @@ html.dark .ct-row:hover { background: rgba(255, 255, 255, 0.03); }
 
 /* Animatic-spelarna: videochrome kring GSAP-scener (demo + testimonial) */
 .dp-stage {
-  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
-  background: var(--panel); min-height: 280px;
+  position: relative; overflow: hidden;
+  background: var(--panel);
+  width: 100%; height: clamp(400px, 108vw, 480px);
+}
+@media (min-width: 768px) {
+  /* Desktop: behåll 16:9. Bredden är då stor och definit, så ingen utsprängning. */
+  .dp-stage { height: auto; aspect-ratio: 16 / 9; }
 }
 .dp-scene {
   position: absolute; inset: 0; padding: 28px;
