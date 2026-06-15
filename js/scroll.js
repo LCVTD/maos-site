@@ -170,17 +170,17 @@ function setupPlayer(rootId, build) {
   });
 }
 
-// Demo: ny händelse → kontrolltornet → föreslagen åtgärd → klart. Cirka 36 sekunder.
-// Instruerad röstberättelse (Tommy Svensson) synkad scen för scen; klippens längder
-// styr scenlängderna (dp-01 9,7 s, dp-02 7,4 s, dp-03 10,7 s, dp-04 3,8 s).
+// Demo: ny händelse → kontrolltornet (markören arbetar i dashboarden) → klart. ~36 s.
+// Dashboarden ligger kvar genom hela dp-02 + dp-03: markören klickar händelsen, sammanfattningen
+// kommer fram, föreslagen åtgärd byggs och godkänns. Instruerad röstberättelse (Tommy Svensson).
 setupPlayer('demo-player', root => {
   const q = sel => root.querySelector(sel);
   const qa = sel => root.querySelectorAll(sel);
-  const scenes = [1, 2, 3, 4].map(n => q('[data-scene="' + n + '"]'));
+  const scenes = [1, 2, 3].map(n => q('[data-scene="' + n + '"]'));
   const stageEl = root.querySelector('.dp-stage');
   const cursorEl = root.querySelector('#dp-cursor');
   // Markörens mål räknas ut dynamiskt ur elementets faktiska position i scenen,
-  // så pekaren landar exakt på det den klickar oavsett skärmstorlek.
+  // så pekaren landar exakt på det den klickar oavsett skärmstorlek (desktop eller mobil stack).
   const aim = sel => {
     const s = stageEl.getBoundingClientRect();
     const r = root.querySelector(sel).getBoundingClientRect();
@@ -194,41 +194,42 @@ setupPlayer('demo-player', root => {
   tl
     // Nollställ allt vid loop-start så inget barn-element ligger kvar synligt
     .set(scenes[0], { opacity: 1 }, 0.01)
-    .set([scenes[1], scenes[2], scenes[3]], { opacity: 0 }, 0.01)
+    .set([scenes[1], scenes[2]], { opacity: 0 }, 0.01)
     .set('#dp-type', { clipPath: 'inset(0 100% 0 0)' }, 0.01)
-    .set(['#dp-cursor', '[data-scene="2"] .dp-summary', '[data-scene="3"] .dp-done'], { opacity: 0 }, 0.01)
-    .set(qa('[data-scene="2"] .dp-row'), { opacity: 0 }, 0.01)
-    .set(qa('[data-scene="3"] .dp-step'), { opacity: 0 }, 0.01)
-    .call(() => q('#dp-row-target')?.classList.remove('hot'), null, 0.02)
+    .set(['#dp-cursor', '.dp-summary', '.dash-action', '.dp-done'], { opacity: 0 }, 0.01)
+    .set(qa('.dp-step'), { opacity: 0 }, 0.01)
+    .set(qa('.dash-evt'), { opacity: 0 }, 0.01)
+    .call(() => q('#dp-row-target')?.classList.remove('active'), null, 0.02)
     // Scen 1: ny händelse i inkorgen
     .call(() => speak('dp-01'), null, 0.5)
     .fromTo(scenes[0].querySelector('.ring-logo'), { scale: 0.9, opacity: 0.55 }, { scale: 1, opacity: 1, duration: 1.1 }, 0.5)
     .fromTo('#dp-type', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 3.4, ease: 'none' }, 0.9)
     .to(scenes[0], { opacity: 0, duration: 0.5 }, 10.4)
-    // Scen 2: kontrolltornet, klicka på händelsen
+    // Scen 2: kontrolltornet tonar in, händelserna listas
     .to(scenes[1], { opacity: 1, duration: 0.5 }, 10.7)
-    .fromTo(qa('[data-scene="2"] .dp-row'), { y: 14, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.16, duration: 0.5 }, 11.0)
+    .fromTo(qa('.dash-evt'), { opacity: 0, x: -8 }, { opacity: 1, x: 0, stagger: 0.12, duration: 0.45 }, 11.0)
     .call(() => speak('dp-02'), null, 11.4)
-    .fromTo('#dp-cursor', { opacity: 0, left: '74%', top: '82%' }, { opacity: 1, duration: 0.3 }, 12.3)
-    .to('#dp-cursor', { left: () => aim('#dp-row-target').left, top: () => aim('#dp-row-target').top, duration: 0.9 }, 12.6)
-    .to('#dp-cursor', { scale: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 13.6)
-    .call(() => q('#dp-row-target')?.classList.add('hot'), null, 13.75)
-    .fromTo('[data-scene="2"] .dp-summary', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.55 }, 14.2)
-    .to('#dp-cursor', { opacity: 0, duration: 0.3 }, 15.1)
-    .to(scenes[1], { opacity: 0, duration: 0.5 }, 18.9)
-    // Scen 3: föreslagen åtgärd och godkännande
-    .to(scenes[2], { opacity: 1, duration: 0.5 }, 19.2)
-    .fromTo(qa('[data-scene="3"] .dp-step'), { x: -8, opacity: 0 }, { x: 0, opacity: 1, stagger: 0.3, duration: 0.5 }, 19.6)
+    // Markören kommer in och klickar händelsen
+    .fromTo('#dp-cursor', { opacity: 0, left: '82%', top: '88%' }, { opacity: 1, duration: 0.3 }, 12.3)
+    .to('#dp-cursor', { left: () => aim('#dp-row-target').left, top: () => aim('#dp-row-target').top, duration: 0.95 }, 12.6)
+    .to('#dp-cursor', { scale: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 13.7)
+    .call(() => q('#dp-row-target')?.classList.add('active'), null, 13.85)
+    // Detaljpanelen visar sammanfattningen; markören glider dit som om man läser
+    .fromTo('.dp-summary', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5 }, 14.3)
+    .to('#dp-cursor', { left: () => aim('.dp-summary').left, top: () => aim('.dp-summary').top, duration: 1.1 }, 15.8)
+    // Föreslagen åtgärd byggs (dp-03)
+    .to('.dash-action', { opacity: 1, duration: 0.4 }, 19.7)
+    .fromTo(qa('.dp-step'), { opacity: 0, x: -6 }, { opacity: 1, x: 0, stagger: 0.22, duration: 0.4 }, 19.9)
     .call(() => speak('dp-03'), null, 20.0)
-    .fromTo('#dp-cursor', { opacity: 0, left: '70%', top: '80%' }, { opacity: 1, duration: 0.3 }, 25.4)
-    .to('#dp-cursor', { left: () => aim('.dp-approve').left, top: () => aim('.dp-approve').top, duration: 0.8 }, 25.7)
-    .to('#dp-cursor', { scale: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 27.1)
-    .to(q('.dp-approve'), { scale: 0.95, duration: 0.12, yoyo: true, repeat: 1 }, 27.1)
-    .to('#dp-cursor', { opacity: 0, duration: 0.3 }, 27.6)
-    .fromTo('[data-scene="3"] .dp-done', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5 }, 27.9)
-    .to(scenes[2], { opacity: 0, duration: 0.5 }, 30.8)
-    // Scen 4: klart
-    .to(scenes[3], { opacity: 1, duration: 0.7 }, 31.1)
+    // Markören trycker godkänn
+    .to('#dp-cursor', { left: () => aim('.dp-approve').left, top: () => aim('.dp-approve').top, duration: 0.9 }, 25.4)
+    .to('#dp-cursor', { scale: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 26.7)
+    .to(q('.dp-approve'), { scale: 0.95, duration: 0.12, yoyo: true, repeat: 1 }, 26.7)
+    .to('#dp-cursor', { opacity: 0, duration: 0.3 }, 27.3)
+    .fromTo('.dp-done', { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5 }, 27.6)
+    .to(scenes[1], { opacity: 0, duration: 0.5 }, 30.8)
+    // Scen 3: klart
+    .to(scenes[2], { opacity: 1, duration: 0.7 }, 31.1)
     .fromTo(q('.dp-end-ring'), { scale: 0.85, rotation: -8 }, { scale: 1, rotation: 0, duration: 2.6, ease: 'power1.out' }, 31.1)
     .call(() => speak('dp-04'), null, 31.6)
     .to({}, { duration: 0.1 }, 35.6);

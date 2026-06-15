@@ -284,11 +284,19 @@ html.dark .ct-row:hover { background: rgba(255, 255, 255, 0.03); }
 .dp-stage {
   position: relative; overflow: hidden;
   background: var(--panel);
-  width: 100%; height: clamp(400px, 108vw, 480px);
+  width: 100%; height: clamp(540px, 155vw, 610px);
 }
 @media (min-width: 768px) {
-  /* Desktop: behåll 16:9. Bredden är då stor och definit, så ingen utsprängning. */
-  .dp-stage { height: auto; aspect-ratio: 16 / 9; }
+  /* Mer vertikal yta så kontrolltornets detaljpanel ryms; bredden är full och definit. */
+  .dp-stage { height: 520px; }
+}
+/* Mobil: håll händelselistan kompakt (två händelser) så detaljpanelen får plats */
+@media (max-width: 767px) {
+  .dash-list { gap: 5px; padding: 10px 12px; }
+  .dash-evt { padding: 6px 9px; }
+  .dash-list .dash-evt:last-child { display: none; }
+  .dash-detail .dp-step { padding: 6px 9px; }
+  .dash-action .dp-steps { gap: 5px; }
 }
 .dp-scene {
   position: absolute; inset: 0; padding: 28px;
@@ -333,6 +341,35 @@ html.dark .ct-row:hover { background: rgba(255, 255, 255, 0.03); }
   font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink);
 }
 .dp-done { display: flex; align-items: center; gap: 7px; color: var(--flow-bright); opacity: 0; }
+
+/* Kontrolltorns-dashboard inuti animaticen: markören arbetar i en kompakt vy av kontrolltornet.
+   Mobil staplar händelselista + detalj (moduler dolda); från 768px tre paneler sida vid sida. */
+.dp-dash { padding: 0; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; text-align: left; }
+.dash-head { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-bottom: 1px solid var(--line-soft); flex-shrink: 0; }
+.dash-head .tl-dot { width: 9px; height: 9px; }
+.dash-title { margin: 0 auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: var(--ink-faint); }
+.dash-col-label { margin-bottom: 8px; }
+.dash-meta { color: var(--ink-faint); font-size: 11px; flex-shrink: 0; }
+.dash-body { display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; flex: 1; min-height: 0; }
+.dash-modules { display: none; }
+.dash-list { padding: 11px 12px; border-bottom: 1px solid var(--line-soft); min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
+.dash-detail { padding: 12px; min-height: 0; overflow: hidden; }
+.dash-evt { border-left: 2px solid transparent; border-radius: 8px; padding: 7px 10px; background: rgba(var(--bg-rgb), 0.4); }
+.dash-evt-top { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+.dash-evt-sub { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
+.dash-detail-title { font-size: 14px; font-weight: 600; color: var(--ink-strong); margin-bottom: 9px; }
+.dash-detail .dp-summary { width: auto; margin: 0 0 11px; font-size: 12px; padding: 9px 11px; }
+.dash-action .dp-steps { width: auto; gap: 6px; }
+.dash-detail .dp-step { padding: 7px 10px; font-size: 12px; }
+.dash-detail .dp-step-num { width: 19px; height: 19px; font-size: 10px; }
+.dash-action-row { display: flex; align-items: center; gap: 12px; margin-top: 11px; flex-wrap: wrap; }
+@media (min-width: 768px) {
+  .dash-body { grid-template-columns: 0.9fr 1.3fr 1.7fr; grid-template-rows: 1fr; }
+  .dash-modules { display: flex; flex-direction: column; gap: 4px; padding: 12px; border-right: 1px solid var(--line-soft); }
+  .dash-list { border-bottom: none; border-right: 1px solid var(--line-soft); }
+  .dash-detail .dp-summary { font-size: 13px; }
+  .dash-detail .dp-step { font-size: 13px; }
+}
 .dp-cursor {
   position: absolute; left: 0; top: 0; width: 18px; height: 18px; z-index: 5;
   border-radius: 99px; border: 2px solid var(--ink-strong);

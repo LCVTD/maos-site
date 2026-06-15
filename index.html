@@ -32,7 +32,7 @@
   <!-- Tailwind 3.4.16: byggd, purgad statisk CSS (ersatte Play CDN-runtimen).
        Bygg om: npx tailwindcss@3.4.16 -c tailwind.config.js -i tailwind-input.css -o css/tailwind.build.css --minify -->
   <link rel="stylesheet" href="css/tailwind.build.css?v=7">
-  <link rel="stylesheet" href="css/styles.css?v=8">
+  <link rel="stylesheet" href="css/styles.css?v=13">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <script type="application/ld+json">
   {
@@ -335,29 +335,59 @@
               <span class="ring-logo w-14 h-14 text-[color:var(--ink)]" aria-hidden="true"></span>
               <p class="dp-transcript"><span id="dp-type">Förfrågan avrop (ramavtal N050S2416): projektledare, nybyggnation.</span></p>
             </div>
-            <div class="dp-scene" data-scene="2">
-              <p class="dp-tag mono-label">02 · KONTROLLTORNET</p>
-              <div class="dp-rows">
-                <div class="dp-row" id="dp-row-target"><span class="dp-row-dot" aria-hidden="true"></span><span><span class="font-medium text-[color:var(--ink)]">Avropsförfrågan</span> · ramavtal N050S2416</span></div>
-                <div class="dp-row"><span class="dp-row-dot" aria-hidden="true"></span><span>Västerås stad · beställning</span></div>
-                <div class="dp-row"><span class="dp-row-dot" aria-hidden="true"></span><span>Tilldelningsbeslut · besiktningsmän Gränby A-hall</span></div>
+            <div class="dp-scene dp-dash" data-scene="2">
+              <div class="dash-head" aria-hidden="true">
+                <span class="tl-dot" style="background:#ff5f57"></span>
+                <span class="tl-dot" style="background:#febc2e"></span>
+                <span class="tl-dot" style="background:#28c840"></span>
+                <span class="dash-title">MAOS · Kontrolltorn</span>
               </div>
-              <div class="dp-summary">
-                <span class="font-medium text-[color:var(--ink)]">Sammanfattning av MAOS:</span>
-                avropsförfrågan på ramavtal N050S2416, projektledare nybyggnation. Maleon har kapacitet och referensuppdrag inom kommunal nybyggnation.
+              <div class="dash-body">
+                <aside class="dash-modules">
+                  <p class="mono-label dash-col-label">MODULER</p>
+                  <span class="ct-nav-item active">Morgonbriefing <span class="dash-meta">06:30</span></span>
+                  <span class="ct-nav-item">Projektpuls <span class="dash-meta">82</span></span>
+                  <span class="ct-nav-item">InspectIQ <span class="dash-meta">7</span></span>
+                  <span class="ct-nav-item">Tidrapport <span class="dash-meta">v24</span></span>
+                  <span class="ct-nav-item">Anbudsfabrik <span class="dash-meta">3</span></span>
+                </aside>
+                <div class="dash-list">
+                  <p class="mono-label dash-col-label">HÄNDELSER</p>
+                  <div class="ct-row dash-evt" id="dp-row-target">
+                    <p class="dash-evt-top"><span class="font-medium text-[color:var(--ink)]">Avropsförfrågan</span><span class="dash-meta">06:12</span></p>
+                    <p class="dash-evt-sub">ramavtal N050S2416 · projektledare</p>
+                  </div>
+                  <div class="ct-row dash-evt">
+                    <p class="dash-evt-top"><span class="text-[color:var(--ink)]">Västerås stad</span><span class="dash-meta">Igår</span></p>
+                    <p class="dash-evt-sub">beställning byggledning</p>
+                  </div>
+                  <div class="ct-row dash-evt">
+                    <p class="dash-evt-top"><span class="text-[color:var(--ink)]">Tilldelningsbeslut</span><span class="dash-meta">Igår</span></p>
+                    <p class="dash-evt-sub">besiktningsmän Gränby A-hall</p>
+                  </div>
+                </div>
+                <div class="dash-detail">
+                  <p class="dash-detail-title">Avrop: projektledare nybyggnation</p>
+                  <div class="dp-summary">
+                    <span class="font-medium text-[color:var(--ink)]">Sammanfattning av MAOS:</span>
+                    avropsförfrågan på ramavtal N050S2416. Maleon har kapacitet och referensuppdrag.
+                  </div>
+                  <div class="dash-action">
+                    <p class="mono-label dash-col-label">FÖRESLAGEN ÅTGÄRD</p>
+                    <ol class="dp-steps">
+                      <li class="dp-step"><span class="dp-step-num">1</span><span>Svarsutkast med intresse, budget och CV</span></li>
+                      <li class="dp-step"><span class="dp-step-num">2</span><span>Budgetoffert och CV för projektledare</span></li>
+                      <li class="dp-step"><span class="dp-step-num">3</span><span>Lägg i Outlook-utkast för granskning</span></li>
+                    </ol>
+                    <div class="dash-action-row">
+                      <span class="pill-primary dp-approve uppercase !text-xs font-bold tracking-[0.14em]">Godkänn utkast</span>
+                      <p class="dp-done mono-label"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> KLART I OUTLOOK</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="dp-scene" data-scene="3">
-              <p class="dp-tag mono-label">03 · FÖRESLAGEN ÅTGÄRD</p>
-              <ol class="dp-steps">
-                <li class="dp-step"><span class="dp-step-num">1</span><span>Svarsutkast med intresse, budget och CV</span></li>
-                <li class="dp-step"><span class="dp-step-num">2</span><span>Bifoga budgetoffert och CV för projektledare</span></li>
-                <li class="dp-step"><span class="dp-step-num">3</span><span>Lägg i Outlook-utkast för din granskning</span></li>
-              </ol>
-              <span class="pill-primary dp-approve uppercase !text-xs font-bold tracking-[0.14em]">Godkänn utkast</span>
-              <p class="dp-done mono-label"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> KLART I OUTLOOK</p>
-            </div>
-            <div class="dp-scene" data-scene="4">
               <span class="ring-logo dp-end-ring w-20 h-20 text-[color:var(--ink)]" aria-hidden="true"></span>
               <p class="text-lg md:text-xl font-semibold text-[color:var(--ink-strong)]">Det som tog timmar tar nu minuter.</p>
             </div>
@@ -866,7 +896,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous"></script>
   <script src="js/ring.js?v=7"></script>
   <script src="js/main.js?v=9"></script>
-  <script src="js/scroll.js?v=8"></script>
+  <script src="js/scroll.js?v=10"></script>
   <script type="module" src="js/hero-scene.js?v=7"></script>
 </body>
 </html>
