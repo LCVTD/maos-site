@@ -1,6 +1,6 @@
-# MAOS – Maleon AI Operating System
+# MAOS – Multi Agent Operating System
 
-> MAOS är ett AI-operativsystem för svenska byggkonsulter och byggentreprenörer. Det bevakar inkorgen, fångar avrop, ÄTA och deadlines, bygger färdiga utkast (svar, projektupplägg, mappstrukturer, protokoll) och rapporterar. Inget skickas autonomt: varje utkast godkänns manuellt av en människa. MAOS är en del av Maleon-koncernen.
+> MAOS är ett AI-operativsystem för svenska byggkonsulter och byggentreprenörer. Det bevakar inkorgen, fångar avrop, ÄTA och deadlines, bygger färdiga utkast (svar, projektupplägg, mappstrukturer, protokoll) och rapporterar. Inget skickas autonomt: varje utkast godkänns manuellt av en människa. MAOS ägs och drivs av MAOS Sweden AB.
 
 ## Vad MAOS gör
 
@@ -36,8 +36,9 @@ MAOS drivs 2026 i intern drift hos Maleon AB (kund noll): cirka 80 aktiva projek
 
 - E-post: info@maos.se
 - Webb: https://maos.se
-- Koncern: Maleon AB, https://maleon.se
+- Bolag: MAOS Sweden AB, org.nr 559313-4132
+- Kund noll: Maleon AB, https://maleon.se
 
 ## English summary
 
-MAOS (Maleon AI Operating System) is an AI operating system for Swedish construction consultants and contractors. It monitors the inbox, captures call-offs, change orders and deadlines, drafts replies, project setups, folder structures and meeting minutes, and reports daily. Nothing is sent autonomously; every draft requires human approval. Modules: MAOS Core, Projektpuls (project phase tracking) and InspectIQ (inspection and building control support). Built on Microsoft 365, Fortnox, Zapier, Claude and Azure. Operated internally at Maleon AB (customer zero) during 2026. Contact: info@maos.se.
+MAOS (Multi Agent Operating System) is an AI operating system for Swedish construction consultants and contractors. It monitors the inbox, captures call-offs, change orders and deadlines, drafts replies, project setups, folder structures and meeting minutes, and reports daily. Nothing is sent autonomously; every draft requires human approval. Modules: MAOS Core, Projektpuls (project phase tracking) and InspectIQ (inspection and building control support). Built on Microsoft 365, Fortnox, Zapier, Claude and Azure. Owned and operated by MAOS Sweden AB. Operated internally at Maleon AB (customer zero) during 2026. Contact: info@maos.se.
