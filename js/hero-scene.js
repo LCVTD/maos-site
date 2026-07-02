@@ -15,7 +15,7 @@ const PALETTES = {
   dark: {
     bg: 0x000000, fog: 0.045,
     ring: 0xFFFFFF, ringHl: 0xFFFFFF, additive: true,
-    beam: 0xFFFFFF, beamCopper: 0xFFFFFF, beamOpacity: 0.40,
+    beam: 0xFFFFFF, beamCopper: 0xFFFFFF, beamOpacity: 0.30,
     particle: new THREE.Color(0xFFFFFF), particleCopper: new THREE.Color(0xFFFFFF),
     cardBg: '#0B0B0B', cardEdge: 'rgba(255,255,255,0.85)', cardText: '#F2F2F2',
     cardBgCopper: '#F2F2F2', cardEdgeCopper: '#FFFFFF', cardTextCopper: '#0A0A0A'
@@ -23,7 +23,7 @@ const PALETTES = {
   light: {
     bg: 0xF5F5F5, fog: 0.038,
     ring: 0x0A0A0A, ringHl: 0x000000, additive: false,
-    beam: 0x0A0A0A, beamCopper: 0x0A0A0A, beamOpacity: 0.40,
+    beam: 0x0A0A0A, beamCopper: 0x0A0A0A, beamOpacity: 0.30,
     particle: new THREE.Color(0x0A0A0A), particleCopper: new THREE.Color(0x0A0A0A),
     cardBg: '#FBFBFB', cardEdge: 'rgba(10,10,10,0.85)', cardText: '#0A0A0A',
     cardBgCopper: '#0A0A0A', cardEdgeCopper: '#0A0A0A', cardTextCopper: '#F5F5F5'
@@ -200,6 +200,29 @@ class HeroScene {
     this.hlMat.opacity = 0.7 + 0.3 * Math.sin(time * 9);
   }
 
+  // Tråden: mjuk kärna med utsuddade kanter som tonar ut mot toppen,
+  // så att kortet ser ut att hänga i en ljuslina i stället för en stav.
+  makeBeamTexture() {
+    const c = document.createElement('canvas');
+    c.width = 32; c.height = 256;
+    const ctx = c.getContext('2d');
+    const img = ctx.createImageData(c.width, c.height);
+    for (let y = 0; y < c.height; y++) {
+      const fade = Math.pow(y / (c.height - 1), 1.5);
+      for (let x = 0; x < c.width; x++) {
+        const u = ((x + 0.5) / c.width) * 2 - 1;
+        const edge = Math.pow(Math.max(0, 1 - u * u), 2.4);
+        const i = (y * c.width + x) * 4;
+        img.data[i] = 255; img.data[i + 1] = 255; img.data[i + 2] = 255;
+        img.data[i + 3] = Math.round(255 * fade * edge);
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+
   makeCardTexture(label, copper) {
     const c = document.createElement('canvas');
     c.width = 360; c.height = 208;
@@ -240,6 +263,7 @@ class HeroScene {
     this.tasks = [];
     const cardGeo = new THREE.PlaneGeometry(1.35, 0.78);
     const beamGeo = new THREE.PlaneGeometry(1, 1);
+    this.beamTex = this.makeBeamTexture();
     for (let i = 0; i < MAX_TASKS + 3; i++) {
       const copper = i % 7 === 3;
       const label = copper ? DECISION_LABEL : TASK_LABELS[i % TASK_LABELS.length];
@@ -250,6 +274,7 @@ class HeroScene {
       const mesh = new THREE.Mesh(cardGeo, mat);
       mesh.visible = false;
       const beamMat = new THREE.MeshBasicMaterial({
+        map: this.beamTex,
         color: copper ? this.pal.beamCopper : this.pal.beam,
         transparent: true, opacity: this.pal.beamOpacity,
         depthWrite: false, side: THREE.DoubleSide
@@ -435,10 +460,10 @@ class HeroScene {
       // Lasern följer kortet från ovan
       const top = 8.4;
       const beamH = Math.max(0.001, top - (m.position.y + 0.42));
-      t.beam.scale.set(0.05, beamH, 1);
+      t.beam.scale.set(0.035, beamH, 1);
       t.beam.position.set(m.position.x, top - beamH / 2, m.position.z - 0.01);
       t.beam.material.opacity = (t.state === 'falling' ? 1 : 0.25) *
-        this.pal.beamOpacity * (0.75 + 0.25 * Math.sin(time * 7 + t.phase));
+        this.pal.beamOpacity * (0.92 + 0.08 * Math.sin(time * 3 + t.phase));
       t.beam.visible = t.state === 'falling' || t.state === 'swept';
     }
     this.spawnTimer += dt;
