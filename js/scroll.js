@@ -37,6 +37,14 @@ if (!reduced) {
   // Guidelinjerna ritas uppifrån och ned
   gsap.to('.guide-line', { scaleY: 1, duration: 1.6, ease: 'power2.inOut', stagger: 0.15, delay: 0.2 });
 
+  // Parallaxen får aldrig ligga på content-wrappern: en transform där gör den
+  // till backdrop root, och glaskortets backdrop-filter slutar sampla canvasen
+  // bakom (korten blurras inte längre genom glaset). Därför flyttas y/opacity
+  // till barnen, med respekt för deras egna basförskjutningar (glaskortets -50px).
+  const heroKids = gsap.utils.toArray('[data-hero="content"] > *').map(el => ({
+    el, y0: Number(gsap.getProperty(el, 'y')) || 0
+  }));
+
   // Hero-intro med Auras fördröjningsrytm
   const intro = gsap.timeline({ defaults: { ease: EASE, duration: 0.9 } });
   if (localStorage.getItem('maos-fast-intro')) intro.timeScale(30);
@@ -51,11 +59,17 @@ if (!reduced) {
     .from('[data-hero="cue"]', { opacity: 0 }, 1.2);
 
   // Kameran dollyar bakåt när hallen lämnas
+  let heroLastP = 0;
   ScrollTrigger.create({
     trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.6,
     onUpdate: self => {
       window.MAOSHero?.setScroll(self.progress);
-      gsap.set('[data-hero="content"]', { y: self.progress * -90, opacity: 1 - self.progress * 1.25 });
+      const p = self.progress;
+      if (p === 0 && heroLastP === 0) return; // vid laddning: låt introt äga barnen
+      heroLastP = p;
+      if (p > 0 && intro.isActive()) intro.progress(1);
+      const dy = p * -90, o = 1 - p * 1.25;
+      for (const k of heroKids) gsap.set(k.el, { y: k.y0 + dy, opacity: o });
     }
   });
 
