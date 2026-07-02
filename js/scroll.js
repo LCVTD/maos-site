@@ -10,7 +10,7 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpVoiceEnabled = true;
 const dpVoiceClips = {};
 ['dp-01', 'dp-02', 'dp-03', 'dp-04'].forEach(id => {
-  const a = new Audio('assets/voice/' + id + '.mp3?v=8');
+  const a = new Audio('assets/voice/' + id + '.mp3?v=9');
   a.preload = 'auto';
   dpVoiceClips[id] = a;
 });
